@@ -27,13 +27,16 @@ function App() {
 
   async function acknowledge(id) {
     setPending(id)
+    let acknowledged = false
     try {
       const response = await fetch(`/api/results/${id}/acknowledge`, { method: 'POST' })
       if (!response.ok) throw new Error()
+      acknowledged = true
+      setResults(current => current.filter(result => result.id !== id))
       setResults(await load())
       setError('')
     } catch {
-      setError('Unable to acknowledge or refresh results. Please try again.')
+      setError(acknowledged ? 'Result acknowledged, but refresh failed. Reload the page.' : 'Unable to acknowledge result. Please try again.')
     } finally {
       setPending(null)
     }

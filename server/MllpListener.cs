@@ -87,7 +87,7 @@ public sealed class MllpListener(IConfiguration configuration, ResultStore store
             throw new InvalidDataException("Missing MSH.");
         var separator = header[3];
         var fields = header.Split(separator);
-        if (fields.Length < 12 || fields[1].Length != 4 || fields[9].Length == 0 ||
+        if (fields.Length < 12 || fields[1].Length is not (4 or 5) || fields[9].Length == 0 ||
             fields[11].Length == 0 || separator < 0x20)
             throw new InvalidDataException("Invalid MSH.");
         var code = "AA";
